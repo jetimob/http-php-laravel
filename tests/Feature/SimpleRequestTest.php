@@ -50,8 +50,12 @@ class SimpleRequestTest extends TestCase
 
 class JsonPlaceholderUsersResponse extends Response
 {
-    /** @var \Jetimob\Http\Tests\Feature\JsonPlaceholderUser[] $container  */
     protected array $container;
+
+    protected function containerItemType(): string
+    {
+        return JsonPlaceholderUser::class;
+    }
 
     public function getContainer(): array
     {

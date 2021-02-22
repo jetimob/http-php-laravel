@@ -19,6 +19,16 @@ trait Serializable
 
     public function hydrateArrayProperty(string $propertyName, \ReflectionProperty $property, array $array): self
     {
+        // if there is a method named {$propertyName}ArrayItemType in this class, it should return the type (class that
+        // uses the Jetimob\Http\Traits\Serializable trait) of the items of the given array
+        if (method_exists($this, "{$propertyName}ItemType")
+            && class_exists($class = $this->{"{$propertyName}ItemType"}())
+            && method_exists($class, 'deserializeArray')
+        ) {
+            $this->{$propertyName} = $class::deserializeArray($array);
+            return $this;
+        }
+
         // We'll try to extract the typing from de docblock. For this to work, the @var typing MUST use the
         // complete namespace of the type, i.e.: \Typing\Full\Namespace\Type
         $docComment = $property->getDocComment();
