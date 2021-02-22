@@ -21,7 +21,7 @@ return [
         'timeout' => 0.0,
 
         // Set this to true if you want to debug the request/response.
-        'debug' => true,
+        'debug' => false,
 
         'middlewares' => [
             \Jetimob\Http\Middlewares\OAuthRequestMiddleware::class,
