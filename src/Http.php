@@ -123,7 +123,10 @@ class Http
     {
         if (is_null($this->oAuth)) {
             $this->oAuth = new OAuth(
-                app()->make(CacheRepository::class),
+                new CacheRepository(app()->make($this->getConfig(
+                    'oauth_access_token_repository',
+                    \Illuminate\Contracts\Cache\Repository::class,
+                ))),
                 app()->make($this->getConfig('oauth_client_provider', OAuthClientResolver::class)),
                 app()->make($this->getConfig('oauth_token_cache_key_resolver', AccessTokenCacheKeyResolver::class)),
                 $this->config,

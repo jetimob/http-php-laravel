@@ -28,6 +28,9 @@ return [
         ],
     ],
 
+    // Repository responsible for storing and retrieving access tokens.
+    'oauth_access_token_repository' => \Illuminate\Contracts\Cache\Repository::class,
+
     // Class responsible to give an access token its unique key to be cached in Laravel`s
     // Illuminate\Contracts\Cache\Repository
     // This given class MUST implement AccessTokenCacheKeyResolverInterface
@@ -37,7 +40,6 @@ return [
     // MUST implement OAuthClientResolverInterface
     'oauth_client_provider' => \Jetimob\Http\OAuth\ClientProviders\OAuthClientResolver::class,
 
-    //
     // MUST inherit from OAuthTokenResolver
     'oauth_access_token_resolver' => [
         \Jetimob\Http\OAuth\OAuthFlow::CLIENT_CREDENTIALS =>
