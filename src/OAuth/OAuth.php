@@ -86,6 +86,18 @@ class OAuth
     }
 
     /**
+     * Forgets an access token. Be aware that if the token is still valid, we'll lose the credentials as there is no
+     * other way to get the refresh token stored with the AccessToken object.
+     *
+     * @param OAuthClient|null $client If client is not provided, the one defined in this instance will be used.
+     */
+    public function forgetAccessToken(?OAuthClient $client = null): void
+    {
+        $client ??= $this->client;
+        $this->cacheRepository->forget($this->getCacheKeyForClient($client));
+    }
+
+    /**
      * Retrieves and caches (if specified to) an Access Token.
      *
      * @param OAuthTokenResolver $tokenResolver Class responsible to return an access token based on a given client and
@@ -133,7 +145,7 @@ class OAuth
             $accessToken = $tokenResolver->refreshAccessToken($client, $accessToken);
 
             // clear the expired access token
-            $this->cacheRepository->forget($cacheKey);
+            $this->forgetAccessToken($client);
         } else {
             $accessToken = $tokenResolver->resolveAccessToken($client, $credentials);
         }
@@ -149,12 +161,13 @@ class OAuth
      * Returns an access token if there is one cached for the given class. Returns null if the access token is not
      * cached.
      *
-     * @param OAuthClient $client
+     * @param OAuthClient|null $client
      * @return AccessToken|null
      * @throws InvalidArgumentException
      */
-    public function getCachedAccessToken(OAuthClient $client): ?AccessToken
+    public function getCachedAccessToken(?OAuthClient $client = null): ?AccessToken
     {
+        $client ??= $this->client;
         $cacheKey = $this->getCacheKeyForClient($client);
 
         if (!$this->cacheRepository->has($cacheKey)) {
