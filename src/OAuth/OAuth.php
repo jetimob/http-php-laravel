@@ -8,7 +8,7 @@ use Jetimob\Http\Exceptions\RuntimeException;
 use Jetimob\Http\OAuth\ClientProviders\OAuthClientResolverInterface;
 use Jetimob\Http\OAuth\Exceptions\AccessTokenExpiredException;
 use Jetimob\Http\OAuth\Storage\AccessTokenCacheKeyResolverInterface;
-use Jetimob\Http\OAuth\Storage\CacheRepository;
+use Jetimob\Http\OAuth\Storage\CacheRepositoryContract;
 use Jetimob\Http\OAuth\TokenResolvers\OAuthAuthorizationCodeTokenResolver;
 use Jetimob\Http\OAuth\TokenResolvers\OAuthTokenResolver;
 use JsonException;
@@ -21,8 +21,8 @@ use Psr\SimpleCache\InvalidArgumentException;
  */
 class OAuth
 {
-    /** @var CacheRepository $cacheRepository Access Token storage handler */
-    private CacheRepository $cacheRepository;
+    /** @var CacheRepositoryContract $cacheRepository Access Token storage handler */
+    private CacheRepositoryContract $cacheRepository;
 
     /** @var OAuthClient $client The OAuth client identifier */
     private OAuthClient $client;
@@ -34,7 +34,7 @@ class OAuth
 
     /**
      * OAuth constructor.
-     * @param CacheRepository $cacheRepository
+     * @param CacheRepositoryContract $cacheRepository
      * @param OAuthClientResolverInterface $clientResolver
      * @param AccessTokenCacheKeyResolverInterface $cacheKeyResolver
      * @param array $config
@@ -42,10 +42,10 @@ class OAuth
      * @see OAuthClient
      * @see OAuthClientResolverInterface
      * @see AccessToken
-     * @see CacheRepository
+     * @see CacheRepositoryContract
      */
     public function __construct(
-        CacheRepository $cacheRepository,
+        CacheRepositoryContract $cacheRepository,
         OAuthClientResolverInterface $clientResolver,
         AccessTokenCacheKeyResolverInterface $cacheKeyResolver,
         array $config,

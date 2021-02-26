@@ -29,7 +29,7 @@ return [
     ],
 
     // Repository responsible for storing and retrieving access tokens.
-    'oauth_access_token_repository' => \Illuminate\Contracts\Cache\Repository::class,
+    'oauth_access_token_repository' => \Jetimob\Http\OAuth\Storage\CacheRepository::class,
 
     // Class responsible to give an access token its unique key to be cached in Laravel`s
     // Illuminate\Contracts\Cache\Repository

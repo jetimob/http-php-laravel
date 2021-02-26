@@ -15,7 +15,7 @@ use Jetimob\Http\OAuth\OAuth;
 use Jetimob\Http\OAuth\OAuthClient;
 use Jetimob\Http\OAuth\OAuthConfig;
 use Jetimob\Http\OAuth\Storage\AccessTokenCacheKeyResolver;
-use Jetimob\Http\OAuth\Storage\CacheRepository;
+use Jetimob\Http\OAuth\Storage\CacheRepositoryContract;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -123,10 +123,7 @@ class Http
     {
         if (is_null($this->oAuth)) {
             $this->oAuth = new OAuth(
-                new CacheRepository(app()->make($this->getConfig(
-                    'oauth_access_token_repository',
-                    \Illuminate\Contracts\Cache\Repository::class,
-                ))),
+                app()->get(CacheRepositoryContract::class),
                 app()->make($this->getConfig('oauth_client_provider', OAuthClientResolver::class)),
                 app()->make($this->getConfig('oauth_token_cache_key_resolver', AccessTokenCacheKeyResolver::class)),
                 $this->config,

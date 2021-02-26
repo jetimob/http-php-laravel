@@ -7,7 +7,7 @@ use Illuminate\Contracts\Cache\Repository;
 use Jetimob\Http\OAuth\AccessToken;
 use Psr\SimpleCache\InvalidArgumentException;
 
-class CacheRepository
+class CacheRepository implements CacheRepositoryContract
 {
     protected Repository $cache;
 

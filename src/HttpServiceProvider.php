@@ -7,6 +7,7 @@ use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 use Jetimob\Http\Console\InstallCommand;
 use Jetimob\Http\OAuth\ClientProviders\OAuthClientResolverInterface;
+use Jetimob\Http\OAuth\Storage\CacheRepositoryContract;
 
 class HttpServiceProvider extends ServiceProvider implements DeferrableProvider
 {
@@ -39,6 +40,10 @@ class HttpServiceProvider extends ServiceProvider implements DeferrableProvider
 
             $this->commands([InstallCommand::class]);
         }
+
+        $this->app->singleton(CacheRepositoryContract::class, static function (Container $app) {
+            return $app->make(config('http.oauth_access_token_repository'));
+        });
 
         $this->app->bind(OAuthClientResolverInterface::class, static function (Container $app) {
             return $app->make(config('http.oauth_client_provider'));
