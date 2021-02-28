@@ -38,7 +38,7 @@ return [
 
     // Class responsible to resolve an OAuthClient
     // MUST implement OAuthClientResolverInterface
-    'oauth_client_provider' => \Jetimob\Http\OAuth\ClientProviders\OAuthClientResolver::class,
+    'oauth_client_resolver' => \Jetimob\Http\OAuth\ClientProviders\OAuthClientResolver::class,
 
     // MUST inherit from OAuthTokenResolver
     'oauth_access_token_resolver' => [

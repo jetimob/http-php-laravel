@@ -207,4 +207,12 @@ class OAuth
     {
         return $this->config;
     }
+
+    /**
+     * @return CacheRepositoryContract
+     */
+    public function getCacheRepository(): CacheRepositoryContract
+    {
+        return $this->cacheRepository;
+    }
 }

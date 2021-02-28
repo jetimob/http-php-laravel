@@ -108,6 +108,12 @@ class Http
         return $this->config[$key] ?? $default;
     }
 
+    public function overwriteConfig(string $key, $value): self
+    {
+        $this->config[$key] = $value;
+        return $this;
+    }
+
     /**
      * Returns an instance of the class responsible to manage everything related to OAuths, including OAuthClient and
      * Access Token credentials.
@@ -123,8 +129,8 @@ class Http
     {
         if (is_null($this->oAuth)) {
             $this->oAuth = new OAuth(
-                app()->get(CacheRepositoryContract::class),
-                app()->make($this->getConfig('oauth_client_provider', OAuthClientResolver::class)),
+                app()->make($this->getConfig('oauth_access_token_repository', CacheRepositoryContract::class)),
+                app()->make($this->getConfig('oauth_client_resolver', OAuthClientResolver::class)),
                 app()->make($this->getConfig('oauth_token_cache_key_resolver', AccessTokenCacheKeyResolver::class)),
                 $this->config,
                 $client,
