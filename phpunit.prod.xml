@@ -1,30 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="vendor/autoload.php"
-         backupGlobals="false"
-         backupStaticAttributes="false"
-         colors="true"
-         verbose="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         processIsolation="false"
-         stopOnFailure="true">
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="vendor/autoload.php" backupGlobals="false"
+         backupStaticAttributes="false" colors="true" verbose="true" convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true" convertWarningsToExceptions="true" processIsolation="false"
+         stopOnFailure="true" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+    <coverage>
+        <include>
+            <directory suffix=".php">src/</directory>
+        </include>
+    </coverage>
     <testsuites>
         <testsuite name="Test Suite">
             <directory>tests</directory>
         </testsuite>
     </testsuites>
-    <filter>
-        <whitelist>
-            <directory suffix=".php">src/</directory>
-        </whitelist>
-    </filter>
     <php>
-        <env name="OAUTH_CLIENT_ID" value=""/>
-        <env name="OAUTH_CLIENT_SECRET" value=""/>
-        <env name="OAUTH_TOKEN_URI" value=""/>
-        <env name="OAUTH_AUTHORIZATION_URI" value=""/>
-
-        <env name="DB_CONNECTION" value="testing"/>
+        <env name="OAUTH_CLIENT_ID" value="OAUTH_CLIENT_ID_EXAMPLE"/>
+        <env name="OAUTH_CLIENT_SECRET" value="OAUTH_CLIENT_SECRET_EXAMPLE"/>
+        <env name="OAUTH_TOKEN_URI" value="OAUTH_TOKEN_URI_EXAMPLE"/>
+        <env name="OAUTH_AUTHORIZATION_URI" value="OAUTH_AUTHORIZATION_URI_EXAMPLE"/>
     </php>
 </phpunit>
