@@ -1,5 +1,6 @@
 # http-php-laravel
-___
+![CI status](https://github.com/jetimob/http-php-laravel/actions/workflows/ci.yml/badge.svg)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 
 Essa biblioteca funciona como um envelope em torno do [Guzzle](https://docs.guzzlephp.org/) para facilitar a troca de
 requisições que precisam de alguma forma de autorização (como o [OAuth 2.0](https://tools.ietf.org/html/rfc6749)) e para
