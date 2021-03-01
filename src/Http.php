@@ -23,6 +23,7 @@ class Http
 {
     private ?OAuth $oAuth = null;
 
+    private ?RequestInterface $lastRequest = null;
     private Client $client;
     private array $config;
 
@@ -103,8 +104,35 @@ class Http
         return $responseClass::fromGuzzleResponse($response)->hydrateWithBody();
     }
 
-    public function getConfig(string $key, $default = null)
+    /**
+     * @return RequestInterface|null
+     */
+    public function getLastRequest(): ?RequestInterface
     {
+        return $this->lastRequest;
+    }
+
+    /**
+     * @param RequestInterface|null $lastRequest
+     * @return Http
+     */
+    public function setLastRequest(?RequestInterface $lastRequest): Http
+    {
+        $this->lastRequest = $lastRequest;
+        return $this;
+    }
+
+    /**
+     * @param string|null $key
+     * @param null $default
+     * @return mixed
+     */
+    public function getConfig(?string $key = null, $default = null)
+    {
+        if (is_null($key)) {
+            return $this->config;
+        }
+
         return $this->config[$key] ?? $default;
     }
 

@@ -29,12 +29,12 @@ class AuthorizationBearerRequestMiddleware
             }
 
             if (!is_string($bearerToken)) {
-                if (!class_exists($bearerToken)) {
-                    throw new RuntimeException(
-                        '"authorization_header_bearer_token" MUST be an string or a class'
-                    );
-                }
+                throw new RuntimeException(
+                    '"authorization_header_bearer_token" MUST be an string or a class'
+                );
+            }
 
+            if (class_exists($bearerToken)) {
                 $instance = new $bearerToken();
 
                 if (!($instance instanceof BearerTokenResolverContract)) {
@@ -46,7 +46,10 @@ class AuthorizationBearerRequestMiddleware
                 $bearerToken = $instance->resolveToken($options);
             }
 
-            return $handler($request->withAddedHeader('Authorization', "Bearer $bearerToken"), $options);
+            $request = $request->withAddedHeader('Authorization', "Bearer $bearerToken");
+            $this->http->setLastRequest($request);
+
+            return $handler($request, $options);
         };
     }
 }
