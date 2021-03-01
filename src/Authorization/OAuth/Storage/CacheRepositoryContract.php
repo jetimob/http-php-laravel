@@ -1,8 +1,8 @@
 <?php
 
-namespace Jetimob\Http\OAuth\Storage;
+namespace Jetimob\Http\Authorization\OAuth\Storage;
 
-use Jetimob\Http\OAuth\AccessToken;
+use Jetimob\Http\Authorization\OAuth\AccessToken;
 
 interface CacheRepositoryContract
 {

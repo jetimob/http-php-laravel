@@ -1,10 +1,10 @@
 <?php
 
-namespace Jetimob\Http\OAuth\Storage;
+namespace Jetimob\Http\Authorization\OAuth\Storage;
 
 use Exception;
 use Illuminate\Contracts\Cache\Repository;
-use Jetimob\Http\OAuth\AccessToken;
+use Jetimob\Http\Authorization\OAuth\AccessToken;
 use Psr\SimpleCache\InvalidArgumentException;
 
 class CacheRepository implements CacheRepositoryContract

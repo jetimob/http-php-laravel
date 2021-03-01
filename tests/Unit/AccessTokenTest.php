@@ -2,7 +2,7 @@
 
 namespace Jetimob\Http\Tests\Unit;
 
-use Jetimob\Http\OAuth\AccessToken;
+use Jetimob\Http\Authorization\OAuth\AccessToken;
 use Jetimob\Http\Tests\TestCase;
 
 class AccessTokenTest extends TestCase

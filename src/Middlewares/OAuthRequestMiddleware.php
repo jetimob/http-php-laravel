@@ -5,8 +5,8 @@ namespace Jetimob\Http\Middlewares;
 use Closure;
 use Jetimob\Http\Exceptions\RuntimeException;
 use Jetimob\Http\Http;
-use Jetimob\Http\OAuth\OAuthConfig;
-use Jetimob\Http\OAuth\TokenResolvers\OAuthTokenResolver;
+use Jetimob\Http\Authorization\OAuth\OAuthConfig;
+use Jetimob\Http\Authorization\OAuth\TokenResolvers\OAuthTokenResolver;
 use Psr\Http\Message\RequestInterface;
 
 class OAuthRequestMiddleware

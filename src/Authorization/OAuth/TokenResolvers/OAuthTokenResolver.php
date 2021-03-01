@@ -1,16 +1,16 @@
 <?php
 
-namespace Jetimob\Http\OAuth\TokenResolvers;
+namespace Jetimob\Http\Authorization\OAuth\TokenResolvers;
 
 use GuzzleHttp\RequestOptions;
 use Jetimob\Http\Exceptions\HttpException;
 use Jetimob\Http\Exceptions\InvalidArgumentException;
 use Jetimob\Http\Http;
-use Jetimob\Http\OAuth\AccessToken;
-use Jetimob\Http\OAuth\Exceptions\AccessTokenExpiredException;
-use Jetimob\Http\OAuth\Exceptions\OAuthException;
-use Jetimob\Http\OAuth\OAuthClient;
-use Jetimob\Http\OAuth\OAuthFlow;
+use Jetimob\Http\Authorization\OAuth\AccessToken;
+use Jetimob\Http\Authorization\OAuth\Exceptions\AccessTokenExpiredException;
+use Jetimob\Http\Authorization\OAuth\Exceptions\OAuthException;
+use Jetimob\Http\Authorization\OAuth\OAuthClient;
+use Jetimob\Http\Authorization\OAuth\OAuthFlow;
 use Jetimob\Http\Request;
 use JsonException;
 

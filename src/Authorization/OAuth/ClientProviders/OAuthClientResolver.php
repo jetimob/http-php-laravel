@@ -1,9 +1,9 @@
 <?php
 
-namespace Jetimob\Http\OAuth\ClientProviders;
+namespace Jetimob\Http\Authorization\OAuth\ClientProviders;
 
 use Jetimob\Http\Exceptions\InvalidArgumentException;
-use Jetimob\Http\OAuth\OAuthClient;
+use Jetimob\Http\Authorization\OAuth\OAuthClient;
 
 class OAuthClientResolver implements OAuthClientResolverInterface
 {

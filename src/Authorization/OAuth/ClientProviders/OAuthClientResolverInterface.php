@@ -1,8 +1,8 @@
 <?php
 
-namespace Jetimob\Http\OAuth\ClientProviders;
+namespace Jetimob\Http\Authorization\OAuth\ClientProviders;
 
-use Jetimob\Http\OAuth\OAuthClient;
+use Jetimob\Http\Authorization\OAuth\OAuthClient;
 
 interface OAuthClientResolverInterface
 {

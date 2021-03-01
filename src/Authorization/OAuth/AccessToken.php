@@ -1,13 +1,13 @@
 <?php
 
-namespace Jetimob\Http\OAuth;
+namespace Jetimob\Http\Authorization\OAuth;
 
 use Jetimob\Http\Exceptions\InvalidArgumentException;
 use Serializable;
 
 /**
  * Class AccessToken
- * @package Jetimob\Http\OAuth
+ * @package Jetimob\Http\Authorization\OAuth
  * {@link} https://tools.ietf.org/html/rfc6749#page-10
  */
 class AccessToken implements Serializable

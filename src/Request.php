@@ -3,7 +3,7 @@
 namespace Jetimob\Http;
 
 use Jetimob\Http\Exceptions\InvalidArgumentException;
-use Jetimob\Http\OAuth\OAuthFlow;
+use Jetimob\Http\Authorization\OAuth\OAuthFlow;
 
 class Request extends \GuzzleHttp\Psr7\Request
 {

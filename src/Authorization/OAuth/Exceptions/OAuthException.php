@@ -1,6 +1,6 @@
 <?php
 
-namespace Jetimob\Http\OAuth\Exceptions;
+namespace Jetimob\Http\Authorization\OAuth\Exceptions;
 
 use Jetimob\Http\Exceptions\HttpException;
 

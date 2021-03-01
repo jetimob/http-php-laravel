@@ -1,8 +1,8 @@
 <?php
 
-namespace Jetimob\Http\OAuth\Storage;
+namespace Jetimob\Http\Authorization\OAuth\Storage;
 
-use Jetimob\Http\OAuth\OAuthClient;
+use Jetimob\Http\Authorization\OAuth\OAuthClient;
 
 interface AccessTokenCacheKeyResolverInterface
 {

@@ -1,22 +1,22 @@
 <?php
 
-namespace Jetimob\Http\OAuth;
+namespace Jetimob\Http\Authorization\OAuth;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Jetimob\Http\Exceptions\HttpException;
 use Jetimob\Http\Exceptions\RuntimeException;
-use Jetimob\Http\OAuth\ClientProviders\OAuthClientResolverInterface;
-use Jetimob\Http\OAuth\Exceptions\AccessTokenExpiredException;
-use Jetimob\Http\OAuth\Storage\AccessTokenCacheKeyResolverInterface;
-use Jetimob\Http\OAuth\Storage\CacheRepositoryContract;
-use Jetimob\Http\OAuth\TokenResolvers\OAuthAuthorizationCodeTokenResolver;
-use Jetimob\Http\OAuth\TokenResolvers\OAuthTokenResolver;
+use Jetimob\Http\Authorization\OAuth\ClientProviders\OAuthClientResolverInterface;
+use Jetimob\Http\Authorization\OAuth\Exceptions\AccessTokenExpiredException;
+use Jetimob\Http\Authorization\OAuth\Storage\AccessTokenCacheKeyResolverInterface;
+use Jetimob\Http\Authorization\OAuth\Storage\CacheRepositoryContract;
+use Jetimob\Http\Authorization\OAuth\TokenResolvers\OAuthAuthorizationCodeTokenResolver;
+use Jetimob\Http\Authorization\OAuth\TokenResolvers\OAuthTokenResolver;
 use JsonException;
 use Psr\SimpleCache\InvalidArgumentException;
 
 /**
  * Class OAuth
- * @package Jetimob\Http\OAuth
+ * @package Jetimob\Http\Authorization\OAuth
  * {@link} https://tools.ietf.org/html/rfc6749
  */
 class OAuth

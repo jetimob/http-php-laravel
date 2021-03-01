@@ -3,9 +3,9 @@
 namespace Jetimob\Http\Tests\Unit;
 
 use Jetimob\Http\Facades\Http;
-use Jetimob\Http\OAuth\AccessToken;
-use Jetimob\Http\OAuth\OAuth;
-use Jetimob\Http\OAuth\OAuthClient;
+use Jetimob\Http\Authorization\OAuth\AccessToken;
+use Jetimob\Http\Authorization\OAuth\OAuth;
+use Jetimob\Http\Authorization\OAuth\OAuthClient;
 use Jetimob\Http\Tests\TestCase;
 
 class CacheTest extends TestCase

@@ -1,6 +1,6 @@
 <?php
 
-namespace Jetimob\Http\OAuth;
+namespace Jetimob\Http\Authorization\OAuth;
 
 class OAuthClient
 {

@@ -3,8 +3,8 @@
 namespace Jetimob\Http\Tests\Unit;
 
 use Jetimob\Http\Facades\Http;
-use Jetimob\Http\OAuth\AccessToken;
-use Jetimob\Http\OAuth\Storage\CacheRepositoryContract;
+use Jetimob\Http\Authorization\OAuth\AccessToken;
+use Jetimob\Http\Authorization\OAuth\Storage\CacheRepositoryContract;
 use Jetimob\Http\Tests\TestCase;
 
 class CustomCacheRepositoryTest extends TestCase

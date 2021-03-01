@@ -10,12 +10,12 @@ use GuzzleHttp\Middleware;
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\RequestOptions;
 use Jetimob\Http\Exceptions\InvalidArgumentException;
-use Jetimob\Http\OAuth\ClientProviders\OAuthClientResolver;
-use Jetimob\Http\OAuth\OAuth;
-use Jetimob\Http\OAuth\OAuthClient;
-use Jetimob\Http\OAuth\OAuthConfig;
-use Jetimob\Http\OAuth\Storage\AccessTokenCacheKeyResolver;
-use Jetimob\Http\OAuth\Storage\CacheRepositoryContract;
+use Jetimob\Http\Authorization\OAuth\ClientProviders\OAuthClientResolver;
+use Jetimob\Http\Authorization\OAuth\OAuth;
+use Jetimob\Http\Authorization\OAuth\OAuthClient;
+use Jetimob\Http\Authorization\OAuth\OAuthConfig;
+use Jetimob\Http\Authorization\OAuth\Storage\AccessTokenCacheKeyResolver;
+use Jetimob\Http\Authorization\OAuth\Storage\CacheRepositoryContract;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 

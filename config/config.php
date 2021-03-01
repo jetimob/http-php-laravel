@@ -28,23 +28,39 @@ return [
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | OAuth
+    |--------------------------------------------------------------------------
+    |
+    */
+
     // Repository responsible for storing and retrieving access tokens.
-    'oauth_access_token_repository' => \Jetimob\Http\OAuth\Storage\CacheRepository::class,
+    'oauth_access_token_repository' => \Jetimob\Http\Authorization\OAuth\Storage\CacheRepository::class,
 
     // Class responsible to give an access token its unique key to be cached in Laravel`s
     // Illuminate\Contracts\Cache\Repository
     // This given class MUST implement AccessTokenCacheKeyResolverInterface
-    'oauth_token_cache_key_resolver' => \Jetimob\Http\OAuth\Storage\AccessTokenCacheKeyResolver::class,
+    'oauth_token_cache_key_resolver' => \Jetimob\Http\Authorization\OAuth\Storage\AccessTokenCacheKeyResolver::class,
 
     // Class responsible to resolve an OAuthClient
     // MUST implement OAuthClientResolverInterface
-    'oauth_client_resolver' => \Jetimob\Http\OAuth\ClientProviders\OAuthClientResolver::class,
+    'oauth_client_resolver' => \Jetimob\Http\Authorization\OAuth\ClientProviders\OAuthClientResolver::class,
 
     // MUST inherit from OAuthTokenResolver
     'oauth_access_token_resolver' => [
-        \Jetimob\Http\OAuth\OAuthFlow::CLIENT_CREDENTIALS =>
-            \Jetimob\Http\OAuth\TokenResolvers\OAuthClientCredentialsTokenResolver::class,
-        \Jetimob\Http\OAuth\OAuthFlow::AUTHORIZATION_CODE =>
-            \Jetimob\Http\OAuth\TokenResolvers\OAuthAuthorizationCodeTokenResolver::class,
+        \Jetimob\Http\Authorization\OAuth\OAuthFlow::CLIENT_CREDENTIALS =>
+            \Jetimob\Http\Authorization\OAuth\TokenResolvers\OAuthClientCredentialsTokenResolver::class,
+        \Jetimob\Http\Authorization\OAuth\OAuthFlow::AUTHORIZATION_CODE =>
+            \Jetimob\Http\Authorization\OAuth\TokenResolvers\OAuthAuthorizationCodeTokenResolver::class,
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Bearer Authorization
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    'authorization_header_bearer_token' => null,
 ];

@@ -1,15 +1,15 @@
 <?php
 
-namespace Jetimob\Http\OAuth\TokenResolvers;
+namespace Jetimob\Http\Authorization\OAuth\TokenResolvers;
 
-use Jetimob\Http\OAuth\AccessToken;
-use Jetimob\Http\OAuth\OAuthClient;
-use Jetimob\Http\OAuth\OAuthFlow;
+use Jetimob\Http\Authorization\OAuth\AccessToken;
+use Jetimob\Http\Authorization\OAuth\OAuthClient;
+use Jetimob\Http\Authorization\OAuth\OAuthFlow;
 
 /**
  * Resolves an access token based on the client credentials flow
  * Class OAuthClientCredentialsTokenResolver
- * @package Jetimob\Http\OAuth\TokenResolvers
+ * @package Jetimob\Http\Authorization\OAuth\TokenResolvers
  * @link https://tools.ietf.org/html/rfc6749#section-4.4
  */
 class OAuthClientCredentialsTokenResolver extends OAuthTokenResolver
