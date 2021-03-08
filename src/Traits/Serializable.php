@@ -107,7 +107,7 @@ trait Serializable
                     $this->{$key} = $expectedClass::deserialize($value, $expectedClass);
                 }
             } elseif (is_array($value)) {
-                return $this->hydrateArrayProperty($key, $prop, $value);
+                $this->hydrateArrayProperty($key, $prop, $value);
             } else {
                 $this->{$key} = $value;
             }
