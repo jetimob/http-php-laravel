@@ -142,7 +142,11 @@ class OAuth
                 throw new AccessTokenExpiredException('The access token has expired and will not be auto refreshed');
             }
 
-            $accessToken = $tokenResolver->refreshAccessToken($client, $accessToken);
+            if ($accessToken->hasRefreshToken()) {
+                $accessToken = $tokenResolver->refreshAccessToken($client, $accessToken);
+            } else {
+                $accessToken =  $tokenResolver->resolveAccessToken($client, $credentials);
+            }
 
             // clear the expired access token
             $this->forgetAccessToken($client);
