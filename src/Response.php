@@ -5,7 +5,7 @@ namespace Jetimob\Http;
 use Jetimob\Http\Traits\Serializable;
 use Psr\Http\Message\ResponseInterface;
 
-class Response extends \GuzzleHttp\Psr7\Response
+class Response extends \GuzzleHttp\Psr7\Response implements \JsonSerializable
 {
     use Serializable;
 

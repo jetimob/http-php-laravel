@@ -4,9 +4,11 @@ namespace Jetimob\Http\Tests\Feature;
 
 use Jetimob\Http\Facades\Http;
 use Jetimob\Http\Request;
-use Jetimob\Http\Response;
 use Jetimob\Http\Tests\TestCase;
-use Jetimob\Http\Traits\Serializable;
+use Jetimob\Http\Tests\Unit\DummyData\JsonPlaceholderAddress;
+use Jetimob\Http\Tests\Unit\DummyData\JsonPlaceholderAddressGeo;
+use Jetimob\Http\Tests\Unit\DummyData\JsonPlaceholderUser;
+use Jetimob\Http\Tests\Unit\DummyData\JsonPlaceholderUsersResponse;
 
 class SimpleRequestTest extends TestCase
 {
@@ -47,110 +49,4 @@ class SimpleRequestTest extends TestCase
         self::assertNotEmpty($geoLocation->getLng());
     }
 }
-
-class JsonPlaceholderUsersResponse extends Response
-{
-    protected array $container;
-
-    protected function containerItemType(): string
-    {
-        return JsonPlaceholderUser::class;
-    }
-
-    public function getContainer(): array
-    {
-        return $this->container;
-    }
-}
-
-class JsonPlaceholderUser
-{
-    use Serializable;
-
-    protected int $id;
-    protected string $name;
-    protected string $username;
-    protected string $email;
-    protected JsonPlaceholderAddress $address;
-
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function getUsername(): string
-    {
-        return $this->username;
-    }
-
-    public function getEmail(): string
-    {
-        return $this->email;
-    }
-
-    public function getAddress(): JsonPlaceholderAddress
-    {
-        return $this->address;
-    }
-}
-
-class JsonPlaceholderAddress
-{
-    use Serializable;
-
-    protected string $street;
-    protected string $suite;
-    protected string $city;
-    protected string $zipcode;
-    protected JsonPlaceholderAddressGeo $geo;
-
-    public function getStreet(): string
-    {
-        return $this->street;
-    }
-
-    public function getSuite(): string
-    {
-        return $this->suite;
-    }
-
-    public function getCity(): string
-    {
-        return $this->city;
-    }
-
-    public function getZipcode(): string
-    {
-        return $this->zipcode;
-    }
-
-    public function getGeo(): JsonPlaceholderAddressGeo
-    {
-        return $this->geo;
-    }
-}
-
-class JsonPlaceholderAddressGeo
-{
-    use Serializable;
-
-    protected string $lat;
-    protected string $lng;
-
-    public function getLat(): string
-    {
-        return $this->lat;
-    }
-
-    public function getLng(): string
-    {
-        return $this->lng;
-    }
-}
-
 

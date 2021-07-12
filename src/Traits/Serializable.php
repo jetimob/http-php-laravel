@@ -2,19 +2,36 @@
 
 namespace Jetimob\Http\Traits;
 
+use Jetimob\Http\Exceptions\RuntimeException;
+
 trait Serializable
 {
     protected array $hydrationData = [];
 
-    public function reflectProperty(string $propertyName): ?\ReflectionProperty
+    public function reflectProperty(\ReflectionClass $reflectionClass, string $propertyName): ?\ReflectionProperty
     {
-        $reflectionClass = new \ReflectionClass($this);
-
         try {
             return $reflectionClass->getProperty($propertyName);
         } catch (\ReflectionException $e) {
             return null;
         }
+    }
+
+    /**
+    * @param \ReflectionNamedType|string $type
+     * @return bool
+     */
+    public static function isBuiltinType($type): bool
+    {
+        if (is_string($type)) {
+            $typeStr = $type;
+        } elseif ($type instanceof \ReflectionNamedType || method_exists($type, 'getName')) {
+            $typeStr = $type->getName();
+        } else {
+            return false;
+        }
+
+        return in_array($typeStr, ['bool', 'boolean', 'double', 'float', 'int', 'integer', 'string']);
     }
 
     public function hydrateArrayProperty(string $propertyName, \ReflectionProperty $property, array $array): self
@@ -46,7 +63,7 @@ trait Serializable
         $type = $matches[1][0];
 
         // is a built-in type array
-        if (in_array($type, ['bool', 'boolean', 'double', 'float', 'int', 'integer', 'string'])) {
+        if (static::isBuiltinType($type)) {
             $this->{$propertyName} = $array;
             return $this;
         }
@@ -65,6 +82,7 @@ trait Serializable
      */
     public function hydrate(array $dataObject): self
     {
+        $reflectionClass = new \ReflectionClass($this);
         $this->hydrationData = $dataObject;
         // check if is not an associative array
         // https://stackoverflow.com/a/173479/4292986
@@ -73,7 +91,7 @@ trait Serializable
                 return $this;
             }
 
-            $prop = $this->reflectProperty('container');
+            $prop = $this->reflectProperty($reflectionClass, 'container');
 
             if (is_null($prop)) {
                 return $this;
@@ -90,7 +108,7 @@ trait Serializable
                 continue;
             }
 
-            $prop = $this->reflectProperty($key);
+            $prop = $this->reflectProperty($reflectionClass, $key);
 
             if (is_null($prop)) {
                 continue;
@@ -169,5 +187,72 @@ trait Serializable
     public function getHydrationData(): array
     {
         return $this->hydrationData;
+    }
+
+    public function serializeProperty(\ReflectionProperty $property)
+    {
+        if (!$property->isInitialized($this)) {
+            return null;
+        }
+
+        $type = $property->getType();
+        $value = $property->getValue($this);
+
+        if (is_null($value) || is_null($type) ||  static::isBuiltinType($type)) {
+            return $value;
+        }
+
+        if ($property->getName() === 'hydrationData') {
+            return null;
+        }
+
+        if (is_array($value)) {
+            $serializedData = [];
+
+            foreach ($value as $arrItem) {
+                if (
+                    method_exists($arrItem, 'toArray')
+                    && !is_null($serializedArrItem = $arrItem->toArray())
+                ) {
+                    $serializedData[] = $serializedArrItem;
+                }
+            }
+
+            return $serializedData;
+        }
+
+        if (method_exists($value, 'toArray')) {
+            return $value->toArray();
+        }
+
+        throw new RuntimeException("Cannot serialize property of type '{$type->getName()}'");
+    }
+
+    public function toArray()
+    {
+        $reflectionClass = new \ReflectionClass($this);
+        $props = [];
+
+        foreach ($reflectionClass->getProperties() as $property) {
+            $property->setAccessible(true);
+
+            if (!is_null($propertyValue = $this->serializeProperty($property))) {
+                $props[$property->getName()] = $propertyValue;
+            }
+
+            $property->setAccessible(false);
+        }
+
+        return $props;
+    }
+
+    public function jsonSerialize()
+    {
+        return $this->toArray();
+    }
+
+    public function serialize()
+    {
+        return $this->toArray();
     }
 }

@@ -12,4 +12,17 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             HttpServiceProvider::class,
         ];
     }
+
+    protected function assertArrayHasStructure($expected, $actual): void
+    {
+        foreach ($expected as $k => $v) {
+            $this->assertArrayHasKey($k, $actual);
+
+            if (is_array($v)) {
+                $this->assertArrayHasStructure($v, $actual[$k]);
+            } else {
+                $this->assertSame($v, $actual[$k]);
+            }
+        }
+    }
 }
