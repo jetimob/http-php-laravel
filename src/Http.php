@@ -44,7 +44,7 @@ class Http
             $retries,
             RequestInterface $request,
             ResponseInterface $response = null,
-            RequestException $exception = null
+            $exception = null
         ) {
             if ($retries >= $this->getConfig('retries', 1)) {
                 return false;
