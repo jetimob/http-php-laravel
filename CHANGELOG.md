@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/jetimob/http-php-laravel/compare/v1.1.1...v1.2.0) (2021-07-14)
+
+
+### Features
+
+* add AbstractApi helper ([9e5c1ea](https://github.com/jetimob/http-php-laravel/commit/9e5c1eacac86722345e510a962d2f7678f71af97))
+
 ### [1.1.1](https://github.com/jetimob/http-php-laravel/compare/v1.1.0...v1.1.1) (2021-07-12)
 
 
