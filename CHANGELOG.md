@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/jetimob/http-php-laravel/compare/v1.2.0...v1.3.0) (2021-07-20)
+
+
+### Features
+
+* update OAuthTokenResolver to be in accord with RFC 6749 ([333bf36](https://github.com/jetimob/http-php-laravel/commit/333bf36dc44f6e4c5c364e0a40b38f765b8d2157))
+
 ## [1.2.0](https://github.com/jetimob/http-php-laravel/compare/v1.1.1...v1.2.0) (2021-07-14)
 
 
