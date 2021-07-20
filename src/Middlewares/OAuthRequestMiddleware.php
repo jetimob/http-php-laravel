@@ -55,6 +55,7 @@ class OAuthRequestMiddleware
             }
 
             $newRequest = $request->withAddedHeader('Authorization', "Bearer {$accessToken->getToken()}");
+            $this->http->setLastRequest($newRequest);
 
             return $handler($newRequest, $options);
         };

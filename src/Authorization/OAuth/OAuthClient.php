@@ -7,25 +7,29 @@ class OAuthClient
     private string $clientId;
     private string $clientSecret;
     private string $tokenEndpoint;
-    private string $authorizationEndpoint;
+    private ?string $authorizationEndpoint;
+    private array $scope;
 
     /**
      * OAuthClient constructor.
      * @param string $clientId
      * @param string $clientSecret
      * @param string $tokenEndpoint
-     * @param string $authorizationEndpoint
+     * @param string|null $authorizationEndpoint
+     * @param array $scope
      */
     public function __construct(
         string $clientId,
         string $clientSecret,
         string $tokenEndpoint,
-        string $authorizationEndpoint
+        string $authorizationEndpoint = null,
+        array $scope = []
     ) {
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
         $this->tokenEndpoint = $tokenEndpoint;
         $this->authorizationEndpoint = $authorizationEndpoint;
+        $this->scope = $scope;
     }
 
     /**
@@ -83,11 +87,19 @@ class OAuthClient
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getAuthorizationEndpoint(): string
+    public function getAuthorizationEndpoint(): ?string
     {
         return $this->authorizationEndpoint;
+    }
+
+    /**
+     * @return array
+     */
+    public function getScope(): array
+    {
+        return $this->scope;
     }
 
     /**

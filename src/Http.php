@@ -22,7 +22,6 @@ use Psr\Http\Message\ResponseInterface;
 class Http
 {
     private ?OAuth $oAuth = null;
-
     private ?RequestInterface $lastRequest = null;
     private Client $client;
     private array $config;

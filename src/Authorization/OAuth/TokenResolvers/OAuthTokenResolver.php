@@ -44,42 +44,57 @@ abstract class OAuthTokenResolver
      * @param OAuthClient $client
      * @param string $grantType
      * @param string|null $credentials
+     * @param callable|null $buildRequestOptions
      * @return AccessToken
-     * @throws InvalidArgumentException | JsonException
+     * @throws JsonException
      */
     public function issueAccessTokenRequest(
         OAuthClient $client,
         string $grantType,
-        ?string $credentials = null
+        ?string $credentials = null,
+        ?callable $buildRequestOptions = null
     ): AccessToken {
-        $requestBody = [
-            'grant_type' => $grantType,
-        ];
-
         if (($grantType === 'refresh_token' || $grantType === OAuthFlow::AUTHORIZATION_CODE) && empty($credentials)) {
             throw new InvalidArgumentException(
                 "\"$grantType\" grant type requires the \$credentials parameter to be defined"
             );
         }
 
+        $requestBody = [
+            'grant_type' => $grantType,
+        ];
+
+        if (!empty($scopes = $client->getScope())) {
+            $requestBody['scope'] = implode(' ', $scopes);
+        }
+
         if ($grantType === 'refresh_token') {
             $requestBody['refresh_token'] = $credentials;
-        } else {
-            if ($grantType === OAuthFlow::AUTHORIZATION_CODE) {
-                $requestBody += [
-                    'code' => $credentials,
-                ];
+        } elseif ($grantType === OAuthFlow::AUTHORIZATION_CODE) {
+            if (empty($authzEndpoint = $client->getAuthorizationEndpoint())) {
+                throw new InvalidArgumentException(
+                    'the authorization endpoint MUST be set to obtain an access token through authorization_code'
+                );
             }
 
             $requestBody += [
+                'code' => $credentials,
                 'client_id' => $client->getClientId(),
-                'client_secret' => $client->getClientSecret(),
+                'redirect_uri' => $authzEndpoint,
             ];
         }
 
-        $response = $this->http->send(new Request('post', $client->getTokenEndpoint()), [
+        $requestOptions = [
             RequestOptions::FORM_PARAMS => $requestBody,
-        ]);
+            RequestOptions::HEADERS => [
+                'Authorization' => 'Basic ' . base64_encode(
+                    sprintf('%s:%s', $client->getClientId(), $client->getClientSecret())
+                ),
+            ],
+        ];
+
+        $requestOptions = !is_null($buildRequestOptions) ? $buildRequestOptions($requestOptions) : $requestOptions;
+        $response = $this->http->send(new Request('post', $client->getTokenEndpoint()), $requestOptions);
 
         return new AccessToken(
             json_decode(

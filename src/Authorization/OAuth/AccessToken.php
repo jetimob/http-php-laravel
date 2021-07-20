@@ -14,6 +14,7 @@ class AccessToken implements Serializable
 {
     private string $accessToken;
     private ?string $refreshToken;
+    private array $scope;
 
     private int $expiresIn;
     private int $generatedAt;
@@ -38,12 +39,13 @@ class AccessToken implements Serializable
 
         $this->accessToken = $options['access_token'];
         $this->refreshToken = $options['refresh_token'] ?? null;
+        $this->scope = explode(' ', ($options['scope'] ?? ''));
         $this->expiresIn = (int) ($options['expires_in'] ?? 3600);
 
         $this->generatedAt = (int) ($options['generated_at'] ?? time());
 
         $this->extraData = array_reduce(
-            array_diff(array_keys($options), ['access_token', 'refresh_token', 'expires_in', 'generated_at']),
+            array_diff(array_keys($options), ['access_token', 'refresh_token', 'expires_in', 'generated_at', 'scope']),
             static fn ($acc, $el) => $acc + [$el => $options[$el]],
             [],
         );
@@ -111,6 +113,19 @@ class AccessToken implements Serializable
     public function getTokenType(): string
     {
         return $this->tokenType;
+    }
+
+    /**
+     * @return array
+     */
+    public function getScope(): array
+    {
+        return $this->scope;
+    }
+
+    public function hasScope(string $scope): bool
+    {
+        return in_array($scope, $this->scope, true);
     }
 
     /**
