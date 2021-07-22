@@ -116,11 +116,23 @@ abstract class AbstractApi
             } elseif (array_key_exists(RequestOptions::QUERY, $body)) {
                 $qParams = $body[RequestOptions::QUERY];
 
-                if (!is_array($qParams)) {
-                    $qParams = array_filter((array) $qParams, static fn ($val) => !is_null($val));
+                if (!is_null($qParams)) {
+                    $path .= '?';
+
+                    if (is_string($qParams)) {
+                        $path .= $qParams;
+                    } elseif (is_array($qParams)) {
+                        $path .= Query::build($qParams ?? []);
+                    } else {
+                        if (!method_exists($qParams, 'toArray')) {
+                            throw new InvalidArgumentException('Given body doesn\'t implement `toArray`');
+                        }
+
+                        $qParams = array_filter($qParams->toArray(), static fn ($val) => !is_null($val));
+                        $path .= Query::build($qParams ?? []);
+                    }
                 }
 
-                $path .= '?' . Query::build($qParams ?? []);
                 $body = null;
             } elseif (array_key_exists(RequestOptions::MULTIPART, $body)) {
                 $body = new MultipartStream($body[RequestOptions::MULTIPART]);

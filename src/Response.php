@@ -2,10 +2,11 @@
 
 namespace Jetimob\Http;
 
+use Illuminate\Contracts\Support\Arrayable;
 use Jetimob\Http\Traits\Serializable;
 use Psr\Http\Message\ResponseInterface;
 
-class Response extends \GuzzleHttp\Psr7\Response implements \JsonSerializable
+class Response extends \GuzzleHttp\Psr7\Response implements \JsonSerializable, Arrayable
 {
     use Serializable;
 

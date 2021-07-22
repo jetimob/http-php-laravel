@@ -198,7 +198,7 @@ trait Serializable
         $type = $property->getType();
         $value = $property->getValue($this);
 
-        if (is_null($value) || is_null($type) ||  static::isBuiltinType($type)) {
+        if (is_null($value) || is_null($type) || static::isBuiltinType($type)) {
             return $value;
         }
 
