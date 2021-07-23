@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.1](https://github.com/jetimob/http-php-laravel/compare/v1.3.0...v1.3.1) (2021-07-23)
+
+
+### Bug Fixes
+
+* add array item that doesn't require serialization into final array ([0633f0c](https://github.com/jetimob/http-php-laravel/commit/0633f0ce4f87025eb9976ebb22a53a27a022b2cd))
+* use `toArray` instead of array casting ([ccb2658](https://github.com/jetimob/http-php-laravel/commit/ccb2658c4cd3bdfbdef6bb500fc4910628774899))
+
 ## [1.3.0](https://github.com/jetimob/http-php-laravel/compare/v1.2.0...v1.3.0) (2021-07-20)
 
 
