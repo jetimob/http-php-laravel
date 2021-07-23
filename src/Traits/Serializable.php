@@ -215,6 +215,8 @@ trait Serializable
                     && !is_null($serializedArrItem = $arrItem->toArray())
                 ) {
                     $serializedData[] = $serializedArrItem;
+                } else {
+                    $serializedData[] = $arrItem;
                 }
             }
 
