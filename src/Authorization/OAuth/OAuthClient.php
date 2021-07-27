@@ -8,6 +8,7 @@ class OAuthClient
     private string $clientSecret;
     private string $tokenEndpoint;
     private ?string $authorizationEndpoint;
+    private ?string $redirectUri;
     private array $scope;
 
     /**
@@ -22,13 +23,15 @@ class OAuthClient
         string $clientId,
         string $clientSecret,
         string $tokenEndpoint,
-        string $authorizationEndpoint = null,
+        ?string $authorizationEndpoint = null,
+        ?string $redirectUri = null,
         array $scope = []
     ) {
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
         $this->tokenEndpoint = $tokenEndpoint;
         $this->authorizationEndpoint = $authorizationEndpoint;
+        $this->redirectUri = $redirectUri;
         $this->scope = $scope;
     }
 
@@ -91,7 +94,32 @@ class OAuthClient
      */
     public function getAuthorizationEndpoint(): ?string
     {
-        return $this->authorizationEndpoint;
+        if (is_null($this->authorizationEndpoint)) {
+            return null;
+        }
+
+        $query = [
+            'response_type' => 'code',
+            'client_id' => $this->getClientId(),
+        ];
+
+        if (!empty($this->scope)) {
+            $query['scope'] = $this->getScopeString();
+        }
+
+        if (!is_null($this->redirectUri)) {
+            $query['redirect_uri'] = $this->getRedirectUri();
+        }
+
+        return $this->authorizationEndpoint . '?' . http_build_query($query);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getRedirectUri(): ?string
+    {
+        return $this->redirectUri;
     }
 
     /**
@@ -100,6 +128,14 @@ class OAuthClient
     public function getScope(): array
     {
         return $this->scope;
+    }
+
+    /**
+     * @return string
+     */
+    public function getScopeString(): string
+    {
+        return implode(' ', $this->scope);
     }
 
     /**

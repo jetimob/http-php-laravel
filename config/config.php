@@ -55,6 +55,8 @@ return [
             \Jetimob\Http\Authorization\OAuth\TokenResolvers\OAuthAuthorizationCodeTokenResolver::class,
     ],
 
+    'oauth_scopes' => [],
+
     /*
     |--------------------------------------------------------------------------
     | Bearer Authorization

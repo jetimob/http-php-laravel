@@ -139,6 +139,7 @@ class AccessToken implements Serializable
             $this->expiresIn,
             $this->generatedAt,
             $this->extraData,
+            $this->scope,
         ]);
     }
 
@@ -153,6 +154,7 @@ class AccessToken implements Serializable
             $this->expiresIn,
             $this->generatedAt,
             $this->extraData,
+            $this->scope,
         ) = unserialize($serialized, ['allowed_classes' => [self::class]]);
     }
 }

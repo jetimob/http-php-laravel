@@ -3,6 +3,7 @@
 namespace Jetimob\Http\Authorization\OAuth\TokenResolvers;
 
 use Jetimob\Http\Authorization\OAuth\AccessToken;
+use Jetimob\Http\Authorization\OAuth\Exceptions\AuthorizationCodeRequiredException;
 use Jetimob\Http\Authorization\OAuth\OAuthClient;
 use Jetimob\Http\Authorization\OAuth\OAuthFlow;
 
@@ -17,8 +18,11 @@ class OAuthAuthorizationCodeTokenResolver extends OAuthTokenResolver
     /**
      * @param OAuthClient $client
      * @param string|null $credentials
+     *
      * @return AccessToken
+     *
      * @throws \JsonException
+     * @throws AuthorizationCodeRequiredException
      */
     public function resolveAccessToken(OAuthClient $client, ?string $credentials = null): AccessToken
     {

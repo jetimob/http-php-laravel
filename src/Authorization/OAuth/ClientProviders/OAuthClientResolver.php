@@ -41,6 +41,7 @@ class OAuthClientResolver implements OAuthClientResolverInterface
         $clientSecret = $extract('oauth_client_secret', 'OAUTH_CLIENT_SECRET');
         $urlAuthorize = $extract('oauth_authorization_uri', 'OAUTH_AUTHORIZATION_URI', false);
         $urlAccessToken = $extract('oauth_token_uri', 'OAUTH_TOKEN_URI');
+        $redirectUri = $extract('oauth_redirect_uri', 'OAUTH_REDIRECT_URI', false);
         $scopes = $extract(
             'oauth_scopes',
             'OAUTH_SCOPES',
@@ -54,6 +55,7 @@ class OAuthClientResolver implements OAuthClientResolverInterface
             $clientSecret,
             $urlAccessToken,
             $urlAuthorize,
+            $redirectUri,
             $scopes,
         );
     }

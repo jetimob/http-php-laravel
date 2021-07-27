@@ -3,6 +3,7 @@
 namespace Jetimob\Http\Authorization\OAuth\TokenResolvers;
 
 use GuzzleHttp\RequestOptions;
+use Jetimob\Http\Authorization\OAuth\Exceptions\AuthorizationCodeRequiredException;
 use Jetimob\Http\Exceptions\HttpException;
 use Jetimob\Http\Exceptions\InvalidArgumentException;
 use Jetimob\Http\Http;
@@ -41,12 +42,15 @@ abstract class OAuthTokenResolver
     abstract public function resolveAccessToken(OAuthClient $client, ?string $credentials = null): AccessToken;
 
     /**
-     * @param OAuthClient $client
-     * @param string $grantType
-     * @param string|null $credentials
+     * @param OAuthClient   $client
+     * @param string        $grantType
+     * @param string|null   $credentials
      * @param callable|null $buildRequestOptions
+     *
      * @return AccessToken
+     *
      * @throws JsonException
+     * @throws AuthorizationCodeRequiredException
      */
     public function issueAccessTokenRequest(
         OAuthClient $client,
@@ -55,6 +59,10 @@ abstract class OAuthTokenResolver
         ?callable $buildRequestOptions = null
     ): AccessToken {
         if (($grantType === 'refresh_token' || $grantType === OAuthFlow::AUTHORIZATION_CODE) && empty($credentials)) {
+            if ($grantType === OAuthFlow::AUTHORIZATION_CODE) {
+                throw new AuthorizationCodeRequiredException($client->getAuthorizationEndpoint());
+            }
+
             throw new InvalidArgumentException(
                 "\"$grantType\" grant type requires the \$credentials parameter to be defined"
             );
@@ -71,17 +79,14 @@ abstract class OAuthTokenResolver
         if ($grantType === 'refresh_token') {
             $requestBody['refresh_token'] = $credentials;
         } elseif ($grantType === OAuthFlow::AUTHORIZATION_CODE) {
-            if (empty($authzEndpoint = $client->getAuthorizationEndpoint())) {
-                throw new InvalidArgumentException(
-                    'the authorization endpoint MUST be set to obtain an access token through authorization_code'
-                );
-            }
-
             $requestBody += [
                 'code' => $credentials,
                 'client_id' => $client->getClientId(),
-                'redirect_uri' => $authzEndpoint,
             ];
+
+            if (!is_null($redirectUri = $client->getRedirectUri())) {
+                $requestBody['redirect_uri'] = $redirectUri;
+            }
         }
 
         $requestOptions = [
