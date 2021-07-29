@@ -4,9 +4,6 @@ namespace Jetimob\Http;
 
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Psr7\MultipartStream;
-use GuzzleHttp\Psr7\Query;
-use GuzzleHttp\RequestOptions;
 use Jetimob\Http\Contracts\HttpProviderContract;
 use Jetimob\Http\Contracts\HydratableContract;
 use Jetimob\Http\Exceptions\InvalidArgumentException;
@@ -28,10 +25,11 @@ abstract class AbstractApi
      * Creates base Guzzle request used by the other functions.
      * This is where you configure a request to be authorized and/or with default headers.
      *
-     * @param $method
-     * @param $path
+     * @param       $method
+     * @param       $path
      * @param array $headers
-     * @param null $body
+     * @param null  $body
+     *
      * @return Request
      */
     abstract protected function makeBaseRequest($method, $path, array $headers = [], $body = null): Request;
@@ -40,7 +38,8 @@ abstract class AbstractApi
      * Wraps a Guzzle exception into another type so that we can expose properties sent by a server response error.
      *
      * @param ClientException | RequestException $exception
-     * @param string|null $into The class that the exception should be wrapped into
+     * @param string|null                        $into The class that the exception should be wrapped into
+     *
      * @return \Throwable
      * @throws \JsonException
      */
@@ -102,48 +101,13 @@ abstract class AbstractApi
         string $method,
         string $path,
         string $responseClass,
-        $body,
-        $headers
+        $options
     ) {
-        if (empty($headers)) {
-            $headers = [];
-        }
-
-        if ($body && is_array($body)) {
-            if (array_key_exists(RequestOptions::JSON, $body)) {
-                $headers['Content-Type'] = 'application/json';
-                $body = json_encode($body[RequestOptions::JSON], JSON_THROW_ON_ERROR);
-            } elseif (array_key_exists(RequestOptions::QUERY, $body)) {
-                $qParams = $body[RequestOptions::QUERY];
-
-                if (!is_null($qParams)) {
-                    $path .= '?';
-
-                    if (is_string($qParams)) {
-                        $path .= $qParams;
-                    } elseif (is_array($qParams)) {
-                        $path .= Query::build($qParams ?? []);
-                    } else {
-                        if (!method_exists($qParams, 'toArray')) {
-                            throw new InvalidArgumentException('Given body doesn\'t implement `toArray`');
-                        }
-
-                        $qParams = array_filter($qParams->toArray(), static fn ($val) => !is_null($val));
-                        $path .= Query::build($qParams ?? []);
-                    }
-                }
-
-                $body = null;
-            } elseif (array_key_exists(RequestOptions::MULTIPART, $body)) {
-                $body = new MultipartStream($body[RequestOptions::MULTIPART]);
-                $headers['Content-Type'] = 'multipart/form-data; boundary=' . $body->getBoundary();
-            }
-        }
-
         try {
             return $this->http->sendExpectingResponseClass(
-                $this->makeBaseRequest($method, $path, $headers, $body),
+                $this->makeBaseRequest($method, $path),
                 $responseClass,
+                $options
             );
         } catch (RequestException | ClientException $e) {
             throw $this->wrapException($e, $this->exceptionClass);
@@ -168,62 +132,74 @@ abstract class AbstractApi
     }
 
     /**
-     * @see AbstractApi::mappedRequest()
      * @param string $path
      * @param string $responseClass
-     * @param null $body
-     * @param array $headers
+     * @param array  $options
+     *
      * @return Response
      * @throws \JsonException
      * @throws \Throwable
+     * @see AbstractApi::mappedRequest()
      */
-    protected function mappedGet(string $path, string $responseClass, $body = null, $headers = [])
-    {
-        return $this->mappedRequest('get', $path, $responseClass, $body, $headers);
+    protected function mappedGet(
+        string $path,
+        string $responseClass,
+        array $options = []
+    ) {
+        return $this->mappedRequest('get', $path, $responseClass, $options);
     }
 
     /**
-     * @see AbstractApi::mappedRequest()
      * @param string $path
      * @param string $responseClass
-     * @param null $body
-     * @param array $headers
+     * @param array  $options Guzzle Options
+     *
      * @return Response
      * @throws \JsonException
      * @throws \Throwable
+     * @see AbstractApi::mappedRequest()
      */
-    protected function mappedPut(string $path, string $responseClass, $body = null, $headers = [])
-    {
-        return $this->mappedRequest('put', $path, $responseClass, $body, $headers);
+    protected function mappedPut(
+        string $path,
+        string $responseClass,
+        array $options = []
+    ) {
+        return $this->mappedRequest('put', $path, $responseClass, $options);
     }
 
     /**
-     * @see AbstractApi::mappedRequest()
      * @param string $path
      * @param string $responseClass
-     * @param null $body
-     * @param array $headers
+     * @param array  $options Guzzle Options
+     *
      * @return Response
      * @throws \JsonException
      * @throws \Throwable
+     * @see AbstractApi::mappedRequest()
      */
-    protected function mappedPost(string $path, string $responseClass, $body = null, $headers = [])
-    {
-        return $this->mappedRequest('post', $path, $responseClass, $body, $headers);
+    protected function mappedPost(
+        string $path,
+        string $responseClass,
+        array $options = []
+    ) {
+        return $this->mappedRequest('post', $path, $responseClass, $options);
     }
 
     /**
-     * @see AbstractApi::mappedRequest()
      * @param string $path
      * @param string $responseClass
-     * @param null $body
-     * @param array $headers
+     * @param array  $options Guzzle Options
+     *
      * @return Response
      * @throws \JsonException
      * @throws \Throwable
+     * @see AbstractApi::mappedRequest()
      */
-    protected function mappedPatch(string $path, string $responseClass, $body = null, $headers = [])
-    {
-        return $this->mappedRequest('patch', $path, $responseClass, $body, $headers);
+    protected function mappedPatch(
+        string $path,
+        string $responseClass,
+        array $options = []
+    ) {
+        return $this->mappedRequest('patch', $path, $responseClass, $options);
     }
 }

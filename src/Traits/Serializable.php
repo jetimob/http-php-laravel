@@ -18,7 +18,8 @@ trait Serializable
     }
 
     /**
-    * @param \ReflectionNamedType|string $type
+     * @param \ReflectionNamedType|string $type
+     *
      * @return bool
      */
     public static function isBuiltinType($type): bool
@@ -78,6 +79,7 @@ trait Serializable
 
     /**
      * @param array $dataObject
+     *
      * @return $this
      */
     public function hydrate(array $dataObject): self
@@ -136,7 +138,8 @@ trait Serializable
 
     /**
      * @param string|array $serialized
-     * @param string|null $into
+     * @param string|null  $into
+     *
      * @return $this
      * @throws \ReflectionException
      * @throws \JsonException
@@ -170,6 +173,10 @@ trait Serializable
         return $instance;
     }
 
+    /**
+     * @throws \ReflectionException
+     * @throws \JsonException
+     */
     public static function deserializeArray(array $serializedArray): array
     {
         $items = [];
