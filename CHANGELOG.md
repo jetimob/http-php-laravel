@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.2](https://github.com/jetimob/http-php-laravel/compare/v1.3.1...v1.3.2) (2021-07-30)
+
+
+### Bug Fixes
+
+* add OAuth scope when making an access token request ([8c9bac3](https://github.com/jetimob/http-php-laravel/commit/8c9bac3ee1c4b1ecf93c5a55d3fa21fbc0f22490))
+
 ### [1.3.1](https://github.com/jetimob/http-php-laravel/compare/v1.3.0...v1.3.1) (2021-07-23)
 
 
