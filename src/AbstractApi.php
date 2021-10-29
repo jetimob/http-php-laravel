@@ -6,6 +6,7 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 use Jetimob\Http\Contracts\HttpProviderContract;
 use Jetimob\Http\Contracts\HydratableContract;
+use RuntimeException;
 use Jetimob\Http\Exceptions\InvalidArgumentException;
 
 /**
@@ -78,7 +79,14 @@ abstract class AbstractApi
         $data = $response->getBody()->getContents();
         $response->getBody()->rewind();
 
-        $decodedData = json_decode($data, true, 512, JSON_THROW_ON_ERROR);
+        try {
+            $decodedData = json_decode($data, true, 512, JSON_THROW_ON_ERROR);
+        } catch (\JsonException $jsonException) {
+            $decodedData = [
+                'message' => 'Failed to decode json exception: ' . $jsonException->getMessage(),
+                'code' => 500
+            ];
+        }
 
         if (empty($decodedData)) {
             return $wrapped;
