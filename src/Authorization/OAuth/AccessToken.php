@@ -7,6 +7,7 @@ use Serializable;
 
 /**
  * Class AccessToken
+ *
  * @package Jetimob\Http\Authorization\OAuth
  * {@link} https://tools.ietf.org/html/rfc6749#page-10
  */
@@ -26,6 +27,7 @@ class AccessToken implements Serializable
 
     /**
      * AccessToken constructor.
+     *
      * @param array $options
      * {@link} https://tools.ietf.org/html/rfc6749#section-5.1
      */
@@ -40,13 +42,13 @@ class AccessToken implements Serializable
         $this->accessToken = $options['access_token'];
         $this->refreshToken = $options['refresh_token'] ?? null;
         $this->scope = explode(' ', ($options['scope'] ?? ''));
-        $this->expiresIn = (int) ($options['expires_in'] ?? 3600);
+        $this->expiresIn = (int)($options['expires_in'] ?? 3600);
 
-        $this->generatedAt = (int) ($options['generated_at'] ?? time());
+        $this->generatedAt = (int)($options['generated_at'] ?? time());
 
         $this->extraData = array_reduce(
             array_diff(array_keys($options), ['access_token', 'refresh_token', 'expires_in', 'generated_at', 'scope']),
-            static fn ($acc, $el) => $acc + [$el => $options[$el]],
+            static fn ($acc, $item) => $acc + [$item => $options[$item]],
             [],
         );
     }
@@ -56,9 +58,19 @@ class AccessToken implements Serializable
         return $this->accessToken;
     }
 
-    public function getExtraData(): array
+    /**
+     * @param string|null $key
+     * @param null        $default
+     *
+     * @return array|mixed|null
+     */
+    public function getExtraData(?string $key = null, $default = null)
     {
-        return $this->extraData;
+        if (is_null($key)) {
+            return $this->extraData;
+        }
+
+        return $this->extraData[$key] ?? $default;
     }
 
     public function getRefreshToken(): ?string
@@ -108,6 +120,7 @@ class AccessToken implements Serializable
     /**
      * Only the type "bearer" is currently implemented.
      * {@link} https://tools.ietf.org/html/rfc6749#section-7.1
+     *
      * @return string
      */
     public function getTokenType(): string
@@ -148,13 +161,13 @@ class AccessToken implements Serializable
      */
     public function unserialize($serialized)
     {
-        list(
+        [
             $this->accessToken,
             $this->refreshToken,
             $this->expiresIn,
             $this->generatedAt,
             $this->extraData,
             $this->scope,
-        ) = unserialize($serialized, ['allowed_classes' => [self::class]]);
+        ] = unserialize($serialized, ['allowed_classes' => [self::class]]) + [5 => []];
     }
 }

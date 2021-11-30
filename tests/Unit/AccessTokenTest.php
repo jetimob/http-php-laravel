@@ -49,4 +49,25 @@ class AccessTokenTest extends TestCase
         self::assertInstanceOf(AccessToken::class, $deserialized);
         self::assertEquals($this->accessToken, $deserialized);
     }
+
+    /** @test */
+    public function serializationWithinDifferentVersionsShouldSucceed(): void
+    {
+        $serializedATWOScope = 'C:44:"Jetimob\Http\Authorization\OAuth\AccessToken":139:{a:5:{i:0;s:12:"ACCESS_TOKEN";i:1;s:13:"REFRESH_TOKEN";i:2;i:2400;i:3;i:1638297953;i:4;a:2:{s:8:"extra_01";s:1:"_";s:8:"extra_02";s:1:"_";}}}';
+
+        /** @var AccessToken $accessToken */
+        $accessToken = unserialize(
+            $serializedATWOScope,
+            ['allowed_classes' => [AccessToken::class]]
+        );
+        self::assertNotNull($accessToken);
+        self::assertInstanceOf(AccessToken::class, $accessToken);
+        self::assertSame($this->accessToken->getAccessToken(), $accessToken->getAccessToken());
+        self::assertSame($this->accessToken->getRefreshToken(), $accessToken->getRefreshToken());
+        self::assertSame($this->accessToken->getExpiresIn(), $accessToken->getExpiresIn());
+        self::assertSame(1638297953, $accessToken->getGeneratedAt());
+        self::assertIsArray($accessToken->getScope());
+        self::assertEmpty($accessToken->getScope());
+        $this->assertArrayHasStructure($this->accessToken->getExtraData(), $accessToken->getExtraData());
+    }
 }
