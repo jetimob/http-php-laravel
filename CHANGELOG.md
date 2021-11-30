@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.3](https://github.com/jetimob/http-php-laravel/compare/v1.3.2...v1.3.3) (2021-11-30)
+
+
+### Bug Fixes
+
+* add default value to deserialized scope property ([a22de0f](https://github.com/jetimob/http-php-laravel/commit/a22de0ffd21969d682b8facc2c8ac95562e4b847))
+
 ### [1.3.2](https://github.com/jetimob/http-php-laravel/compare/v1.3.1...v1.3.2) (2021-07-30)
 
 
