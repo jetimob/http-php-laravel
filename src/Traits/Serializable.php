@@ -2,6 +2,7 @@
 
 namespace Jetimob\Http\Traits;
 
+use Illuminate\Support\Str;
 use Jetimob\Http\Exceptions\RuntimeException;
 
 trait Serializable
@@ -39,8 +40,9 @@ trait Serializable
     {
         // if there is a method named {$propertyName}ArrayItemType in this class, it should return the type (class that
         // uses the Jetimob\Http\Traits\Serializable trait) of the items of the given array
-        if (method_exists($this, "{$propertyName}ItemType")
-            && class_exists($class = $this->{"{$propertyName}ItemType"}())
+        $propertyNameCamelCased = Str::camel($propertyName);
+        if (method_exists($this, "{$propertyNameCamelCased}ItemType")
+            && class_exists($class = $this->{"{$propertyNameCamelCased}ItemType"}())
             && method_exists($class, 'deserializeArray')
         ) {
             $this->{$propertyName} = $class::deserializeArray($array);
