@@ -4,7 +4,7 @@ namespace Jetimob\Http;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
-use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Promise\PromiseInterface;
@@ -165,5 +165,18 @@ class Http
         }
 
         return $this->oAuth;
+    }
+
+    /**
+     * It takes an array of responses and creates a mock handler that will return those responses when the client
+     * makes a request
+     *
+     * @param array|\GuzzleHttp\Psr7\Response[] $responses An array of responses.
+     */
+    public function mockClientWithResponses(array $responses): void
+    {
+        $mockHandler = new MockHandler($responses);
+
+        $this->client = new Client(['handler' => HandlerStack::create($mockHandler)]);
     }
 }
