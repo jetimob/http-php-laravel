@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/jetimob/http-php-laravel/compare/v1.3.3...v1.4.0) (2022-04-01)
+
+
+### Features
+
+* add method to mock guzzle client responses ([2eef615](https://github.com/jetimob/http-php-laravel/commit/2eef6151afb1439a1a660cc381f1f588887385af))
+* expose http on AbstractApi ([1eeb90e](https://github.com/jetimob/http-php-laravel/commit/1eeb90e69d499bdcee1a7e1d3e70641452f40f5c))
+* modifica a hidratação de array por propriedade ([a67f44b](https://github.com/jetimob/http-php-laravel/commit/a67f44bda4b49f29fb08019242cbed915328c28b))
+
 ### [1.3.3](https://github.com/jetimob/http-php-laravel/compare/v1.3.2...v1.3.3) (2021-11-30)
 
 
