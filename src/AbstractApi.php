@@ -21,6 +21,11 @@ abstract class AbstractApi
         $this->http = $httpProvider->getHttpInstance();
     }
 
+    public function getHttp(): Http
+    {
+        return $this->http;
+    }
+
     /**
      * Creates base Guzzle request used by the other functions.
      * This is where you configure a request to be authorized and/or with default headers.
