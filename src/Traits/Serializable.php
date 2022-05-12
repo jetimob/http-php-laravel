@@ -257,11 +257,13 @@ trait Serializable
         return $props;
     }
 
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return $this->toArray();
     }
 
+    #[\ReturnTypeWillChange]
     public function serialize()
     {
         return $this->toArray();
