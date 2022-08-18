@@ -16,6 +16,8 @@ use Jetimob\Http\Authorization\OAuth\OAuthClient;
 use Jetimob\Http\Authorization\OAuth\OAuthConfig;
 use Jetimob\Http\Authorization\OAuth\Storage\AccessTokenCacheKeyResolver;
 use Jetimob\Http\Authorization\OAuth\Storage\CacheRepositoryContract;
+use Jetimob\Http\Exceptions\RuntimeException;
+use Jetimob\Http\Middlewares\OAuthRequestMiddleware;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -71,6 +73,10 @@ class Http
     public function sendAsync(Request $request, array $options = []): PromiseInterface
     {
         if ($request->requiresOAuthAuthorization()) {
+            if (!in_array(OAuthRequestMiddleware::class, $this->config['guzzle'] ?? [], true)) {
+                throw new RuntimeException(OAuthRequestMiddleware::class . ' should be included in the middleware stack');
+            }
+
             $options[OAuthConfig::OAUTH_GRANT_TYPE] = $request->getOAuthGrantType();
         }
 
