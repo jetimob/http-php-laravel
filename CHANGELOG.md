@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/jetimob/http-php-laravel/compare/v1.4.0...v2.0.0) (2022-08-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* bump to php 8
+
+### Bug Fixes
+
+* add attribute #[\ReturnTypeWillChange] to 'serialize' methods on Serialiable trait ([558d1f5](https://github.com/jetimob/http-php-laravel/commit/558d1f57e5d9e3a370a090d872dde4dc1318ac57))
+* throw RuntimeException when the request expects authz ([58f06db](https://github.com/jetimob/http-php-laravel/commit/58f06dbe2f9ef3c1a9307482f85bd3cc6c6f7861))
+
+
+### deps
+
+* bump to php 8 ([78706ff](https://github.com/jetimob/http-php-laravel/commit/78706ff883804f59eca809d9fc791855e15cff30))
+
 ## [1.4.0](https://github.com/jetimob/http-php-laravel/compare/v1.3.3...v1.4.0) (2022-04-01)
 
 
