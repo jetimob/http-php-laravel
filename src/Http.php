@@ -113,6 +113,7 @@ class Http
 
     /**
      * @param RequestInterface|null $lastRequest
+     *
      * @return Http
      */
     public function setLastRequest(?RequestInterface $lastRequest): Http
@@ -123,7 +124,8 @@ class Http
 
     /**
      * @param string|null $key
-     * @param null $default
+     * @param null        $default
+     *
      * @return mixed
      */
     public function getConfig(?string $key = null, $default = null)
@@ -148,7 +150,9 @@ class Http
      * Lazy loading because not every request will use OAuth authorization.
      *
      * @link https://tools.ietf.org/html/rfc6749
+     *
      * @param OAuthClient|null $client
+     *
      * @return OAuth
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */

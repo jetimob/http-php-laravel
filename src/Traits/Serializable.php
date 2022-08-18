@@ -4,30 +4,36 @@ namespace Jetimob\Http\Traits;
 
 use Illuminate\Support\Str;
 use Jetimob\Http\Exceptions\RuntimeException;
+use JsonException;
+use ReflectionClass;
+use ReflectionException;
+use ReflectionNamedType;
+use ReflectionProperty;
+use TypeError;
 
 trait Serializable
 {
     protected array $hydrationData = [];
 
-    public function reflectProperty(\ReflectionClass $reflectionClass, string $propertyName): ?\ReflectionProperty
+    public function reflectProperty(ReflectionClass $reflectionClass, string $propertyName): ?ReflectionProperty
     {
         try {
             return $reflectionClass->getProperty($propertyName);
-        } catch (\ReflectionException $e) {
+        } catch (ReflectionException $e) {
             return null;
         }
     }
 
     /**
-     * @param \ReflectionNamedType|string $type
+     * @param ReflectionNamedType|string $type
      *
      * @return bool
      */
-    public static function isBuiltinType($type): bool
+    public static function isBuiltinType(ReflectionNamedType|string $type): bool
     {
         if (is_string($type)) {
             $typeStr = $type;
-        } elseif ($type instanceof \ReflectionNamedType || method_exists($type, 'getName')) {
+        } elseif ($type instanceof ReflectionNamedType || method_exists($type, 'getName')) {
             $typeStr = $type->getName();
         } else {
             return false;
@@ -36,7 +42,7 @@ trait Serializable
         return in_array($typeStr, ['bool', 'boolean', 'double', 'float', 'int', 'integer', 'string']);
     }
 
-    public function hydrateArrayProperty(string $propertyName, \ReflectionProperty $property, array $array): self
+    public function hydrateArrayProperty(string $propertyName, ReflectionProperty $property, array $array): self
     {
         // if there is a method named {$propertyName}ArrayItemType in this class, it should return the type (class that
         // uses the Jetimob\Http\Traits\Serializable trait) of the items of the given array
@@ -82,15 +88,14 @@ trait Serializable
     /**
      * @param array $dataObject
      *
-     * @return $this
+     * @return static
      */
-    public function hydrate(array $dataObject): self
+    public function hydrate(array $dataObject): static
     {
-        $reflectionClass = new \ReflectionClass($this);
+        $reflectionClass = new ReflectionClass($this);
         $this->hydrationData = $dataObject;
-        // check if is not an associative array
-        // https://stackoverflow.com/a/173479/4292986
-        if (array_keys($dataObject) === range(0, count($dataObject) - 1)) {
+
+        if (array_is_list($dataObject)) {
             if (!property_exists($this, 'container')) {
                 return $this;
             }
@@ -142,12 +147,11 @@ trait Serializable
      * @param string|array $serialized
      * @param string|null  $into
      *
-     * @return $this
-     * @throws \ReflectionException
-     * @throws \JsonException
-     * @throws \TypeError
+     * @return static
+     * @throws JsonException
+     * @throws TypeError
      */
-    public static function deserialize($serialized, string $into = null): self
+    public static function deserialize(string|array $serialized, string $into = null): static
     {
         if (is_array($serialized)) {
             $data = $serialized;
@@ -176,8 +180,7 @@ trait Serializable
     }
 
     /**
-     * @throws \ReflectionException
-     * @throws \JsonException
+     * @throws JsonException
      */
     public static function deserializeArray(array $serializedArray): array
     {
@@ -198,7 +201,7 @@ trait Serializable
         return $this->hydrationData;
     }
 
-    public function serializeProperty(\ReflectionProperty $property)
+    public function serializeProperty(ReflectionProperty $property)
     {
         if (!$property->isInitialized($this)) {
             return null;
@@ -241,7 +244,7 @@ trait Serializable
 
     public function toArray()
     {
-        $reflectionClass = new \ReflectionClass($this);
+        $reflectionClass = new ReflectionClass($this);
         $props = [];
 
         foreach ($reflectionClass->getProperties() as $property) {
@@ -257,14 +260,12 @@ trait Serializable
         return $props;
     }
 
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->toArray();
     }
 
-    #[\ReturnTypeWillChange]
-    public function serialize()
+    public function serialize(): array
     {
         return $this->toArray();
     }
