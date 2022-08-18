@@ -2,6 +2,7 @@
 
 namespace Jetimob\Http\Authorization\OAuth;
 
+use Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Jetimob\Http\Exceptions\HttpException;
 use Jetimob\Http\Exceptions\RuntimeException;
@@ -16,6 +17,7 @@ use Psr\SimpleCache\InvalidArgumentException;
 
 /**
  * Class OAuth
+ *
  * @package Jetimob\Http\Authorization\OAuth
  * {@link} https://tools.ietf.org/html/rfc6749
  */
@@ -34,23 +36,26 @@ class OAuth
 
     /**
      * OAuth constructor.
-     * @param CacheRepositoryContract $cacheRepository
-     * @param OAuthClientResolverInterface $clientResolver
+     *
+     * @param CacheRepositoryContract              $cacheRepository
+     * @param OAuthClientResolverInterface         $clientResolver
      * @param AccessTokenCacheKeyResolverInterface $cacheKeyResolver
-     * @param array $config
-     * @param OAuthClient|null $client
+     * @param array                                $config
+     * @param OAuthClient|null                     $client
+     *
      * @see OAuthClient
      * @see OAuthClientResolverInterface
      * @see AccessToken
      * @see CacheRepositoryContract
      */
     public function __construct(
-        CacheRepositoryContract $cacheRepository,
-        OAuthClientResolverInterface $clientResolver,
+        CacheRepositoryContract              $cacheRepository,
+        OAuthClientResolverInterface         $clientResolver,
         AccessTokenCacheKeyResolverInterface $cacheKeyResolver,
-        array $config,
-        ?OAuthClient $client = null
-    ) {
+        array                                $config,
+        ?OAuthClient                         $client = null
+    )
+    {
         $this->cacheRepository = $cacheRepository;
         $this->cacheKeyResolver = $cacheKeyResolver;
         $this->config = $config;
@@ -61,6 +66,7 @@ class OAuth
      * Returns the key to be used to store an access token to the given client.
      *
      * @param OAuthClient $client
+     *
      * @return string
      */
     public function getCacheKeyForClient(OAuthClient $client): string
@@ -71,9 +77,10 @@ class OAuth
     /**
      * Stores an access token attached to is`s client.
      *
-     * @param AccessToken $accessToken
+     * @param AccessToken      $accessToken
      * @param OAuthClient|null $client If client is not provided, the one defined in this instance will be used.
-     * @throws \Exception
+     *
+     * @throws Exception
      */
     public function storeAccessToken(AccessToken $accessToken, ?OAuthClient $client = null): void
     {
@@ -102,26 +109,31 @@ class OAuth
      *
      * @param OAuthTokenResolver $tokenResolver Class responsible to return an access token based on a given client and
      * credentials (authorization_code, refresh_token,...).
-     * @param string|null $credentials Credentials can be the authorization_code or the refresh_token,
+     * @param string|null        $credentials Credentials can be the authorization_code or the refresh_token,
      * depending on the $tokenResolver class context.
-     * @param OAuthClient|null $client
-     * @param bool $retrieveFromCache If set to true, a cached access token will be retrieved if there is one.
-     * @param bool $cacheResult Caches a successful access token request.
-     * @param bool $autoRefresh Automatically issues a request to refresh an expired access token if set to true.
+     * @param OAuthClient|null   $client
+     * @param bool               $retrieveFromCache If set to true, a cached access token will be retrieved if there is
+     *     one.
+     * @param bool               $cacheResult Caches a successful access token request.
+     * @param bool               $autoRefresh Automatically issues a request to refresh an expired access token if set
+     *     to true.
+     *
      * @return AccessToken
+     * @throws AccessTokenExpiredException|Exceptions\OAuthException|HttpException|JsonException
+     * @throws Exception
      * @see AccessToken
      * @see OAuthClient
      * @see OAuthTokenResolver
-     * @throws AccessTokenExpiredException|Exceptions\OAuthException|HttpException|InvalidArgumentException|JsonException
      */
     public function getAccessToken(
         OAuthTokenResolver $tokenResolver,
-        ?string $credentials = null,
-        ?OAuthClient $client = null,
-        bool $retrieveFromCache = true,
-        bool $cacheResult = true,
-        bool $autoRefresh = true
-    ): AccessToken {
+        ?string            $credentials = null,
+        ?OAuthClient       $client = null,
+        bool               $retrieveFromCache = true,
+        bool               $cacheResult = true,
+        bool               $autoRefresh = true
+    ): AccessToken
+    {
         // use the resolved client if none is provided
         $client ??= $this->client;
         $cacheKey = $this->getCacheKeyForClient($client);
@@ -145,7 +157,7 @@ class OAuth
             if ($accessToken->hasRefreshToken()) {
                 $accessToken = $tokenResolver->refreshAccessToken($client, $accessToken);
             } else {
-                $accessToken =  $tokenResolver->resolveAccessToken($client, $credentials);
+                $accessToken = $tokenResolver->resolveAccessToken($client, $credentials);
             }
 
             // clear the expired access token
@@ -166,8 +178,8 @@ class OAuth
      * cached.
      *
      * @param OAuthClient|null $client
+     *
      * @return AccessToken|null
-     * @throws InvalidArgumentException
      */
     public function getCachedAccessToken(?OAuthClient $client = null): ?AccessToken
     {
@@ -184,12 +196,13 @@ class OAuth
     /**
      * Exchanges an authorization code for an access token using the OAuth client defined in this class instance.
      *
-     * @see OAuth::$client
-     * @link https://tools.ietf.org/html/rfc6749#section-4.1
      * @param string $authorizationCode
+     *
      * @return AccessToken
      * @throws AccessTokenExpiredException|Exceptions\OAuthException|HttpException|JsonException
      * @throws InvalidArgumentException|BindingResolutionException
+     * @see OAuth::$client
+     * @link https://tools.ietf.org/html/rfc6749#section-4.1
      */
     public function handleAuthorizationCodeExchange(string $authorizationCode): AccessToken
     {

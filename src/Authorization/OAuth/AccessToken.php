@@ -48,7 +48,7 @@ class AccessToken implements Serializable
 
         $this->extraData = array_reduce(
             array_diff(array_keys($options), ['access_token', 'refresh_token', 'expires_in', 'generated_at', 'scope']),
-            static fn ($acc, $item) => $acc + [$item => $options[$item]],
+            static fn($acc, $item) => $acc + [$item => $options[$item]],
             [],
         );
     }
@@ -64,7 +64,7 @@ class AccessToken implements Serializable
      *
      * @return array|mixed|null
      */
-    public function getExtraData(?string $key = null, $default = null)
+    public function getExtraData(?string $key = null, $default = null): mixed
     {
         if (is_null($key)) {
             return $this->extraData;
@@ -79,7 +79,7 @@ class AccessToken implements Serializable
     }
 
     /**
-     * @return mixed|string
+     * @return string
      */
     public function getAccessToken(): string
     {
@@ -144,22 +144,32 @@ class AccessToken implements Serializable
     /**
      * @inheritdoc
      */
-    public function serialize()
+    public function serialize(): ?string
     {
-        return serialize([
+        return serialize($this->__serialize());
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function unserialize($data): void
+    {
+        $this->__unserialize(unserialize($data, ['allowed_classes' => [self::class]]) + [5 => []]);
+    }
+
+    public function __serialize(): array
+    {
+        return [
             $this->accessToken,
             $this->refreshToken,
             $this->expiresIn,
             $this->generatedAt,
             $this->extraData,
             $this->scope,
-        ]);
+        ];
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function unserialize($serialized)
+    public function __unserialize(array $data): void
     {
         [
             $this->accessToken,
@@ -168,6 +178,6 @@ class AccessToken implements Serializable
             $this->generatedAt,
             $this->extraData,
             $this->scope,
-        ] = unserialize($serialized, ['allowed_classes' => [self::class]]) + [5 => []];
+        ] = $data;
     }
 }
