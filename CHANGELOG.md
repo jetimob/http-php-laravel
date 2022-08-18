@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/jetimob/http-php-laravel/compare/v1.4.0...v2.0.0) (2022-08-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* bump to php 8
+
+### Bug Fixes
+
+* throw RuntimeException when the request expects authz ([5d9e304](https://github.com/jetimob/http-php-laravel/commit/5d9e3045df422a0cc6f8b96683fd79cf0f7b2fbd))
+
+
+### deps
+
+* bump to php 8 ([da4dadd](https://github.com/jetimob/http-php-laravel/commit/da4dadd042219b2934ca1b4156069637d59f8e81))
+
 ## [1.4.0](https://github.com/jetimob/http-php-laravel/compare/v1.3.3...v1.4.0) (2022-04-01)
 
 
