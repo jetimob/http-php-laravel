@@ -15,11 +15,11 @@ trait Serializable
 {
     protected array $hydrationData = [];
 
-    public function reflectProperty(ReflectionClass $reflectionClass, string $propertyName): ?ReflectionProperty
+    public static function reflectProperty(ReflectionClass $reflectionClass, string $propertyName): ?ReflectionProperty
     {
         try {
             return $reflectionClass->getProperty($propertyName);
-        } catch (ReflectionException $e) {
+        } catch (ReflectionException) {
             return null;
         }
     }
@@ -85,11 +85,6 @@ trait Serializable
         return $this;
     }
 
-    /**
-     * @param array $dataObject
-     *
-     * @return static
-     */
     public function hydrate(array $dataObject): static
     {
         $reflectionClass = new ReflectionClass($this);
@@ -100,7 +95,7 @@ trait Serializable
                 return $this;
             }
 
-            $prop = $this->reflectProperty($reflectionClass, 'container');
+            $prop = self::reflectProperty($reflectionClass, 'container');
 
             if (is_null($prop)) {
                 return $this;
@@ -117,7 +112,7 @@ trait Serializable
                 continue;
             }
 
-            $prop = $this->reflectProperty($reflectionClass, $key);
+            $prop = self::reflectProperty($reflectionClass, $key);
 
             if (is_null($prop)) {
                 continue;
@@ -144,15 +139,18 @@ trait Serializable
     }
 
     /**
-     * @param string|array $serialized
-     * @param string|null  $into
-     *
-     * @return static
      * @throws JsonException
      * @throws TypeError
      */
-    public static function deserialize(string|array $serialized, string $into = null): static
+    public static function deserialize(string|array|null $serialized, string $into = null): static
     {
+        $className = $into ?? static::class;
+        $instance = new $className();
+
+        if (is_null($serialized)) {
+            return $instance;
+        }
+
         if (is_array($serialized)) {
             $data = $serialized;
         } elseif (is_string($serialized)) {
@@ -160,9 +158,6 @@ trait Serializable
         } else {
             $data = json_decode(json_encode($serialized, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
         }
-
-        $className = $into ?? static::class;
-        $instance = new $className();
 
         if (is_string($data)) {
             $data = json_decode($data, true, 512, JSON_THROW_ON_ERROR);
@@ -193,9 +188,6 @@ trait Serializable
         return $items;
     }
 
-    /**
-     * @return array
-     */
     public function getHydrationData(): array
     {
         return $this->hydrationData;
@@ -242,7 +234,7 @@ trait Serializable
         throw new RuntimeException("Cannot serialize property of type '{$type->getName()}'");
     }
 
-    public function toArray()
+    public function toArray(): array
     {
         $reflectionClass = new ReflectionClass($this);
         $props = [];
