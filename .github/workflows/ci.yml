@@ -34,7 +34,7 @@ jobs:
         uses: php-actions/composer@v5
         with:
           dev: yes
-          php_version: 7.4
+          php_version: 8.1
           version: 2
           args: --prefer-dist
 
@@ -42,5 +42,5 @@ jobs:
         uses: php-actions/phpunit@v2
         with:
           configuration: phpunit.prod.xml
-          php_version: 7.4
+          php_version: 8.1
           version: 9
