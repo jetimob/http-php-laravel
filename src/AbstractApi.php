@@ -83,13 +83,19 @@ abstract class AbstractApi
         $data = $response->getBody()->getContents();
         $response->getBody()->rewind();
 
-        $decodedData = json_decode($data, true, 512, JSON_THROW_ON_ERROR);
+        try {
+            $decodedData = json_decode($data, true, 512, JSON_THROW_ON_ERROR);
+            if (empty($decodedData)) {
+                return $wrapped;
+            }
 
-        if (empty($decodedData)) {
-            return $wrapped;
+            $wrapped->hydrate($decodedData);
+        } catch (\JsonException) {
+            if (method_exists($wrapped, 'handleServerError')) {
+                $wrapped->handleServerError();
+            }
         }
 
-        $wrapped->hydrate($decodedData);
         return $wrapped;
     }
 
