@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/jetimob/http-php-laravel/compare/v2.0.0...v2.1.0) (2022-08-18)
+
+
+### Features
+
+* don't throw JsonException when trying to decode data ([586524c](https://github.com/jetimob/http-php-laravel/commit/586524c57cbd31c5a673f86cfbc2ccf7a3d21628))
+
+
+### Bug Fixes
+
+* accept null serialized data ([f97db01](https://github.com/jetimob/http-php-laravel/commit/f97db010d305ce5b7f102f29813438030ca30927))
+
 ## [2.0.0](https://github.com/jetimob/http-php-laravel/compare/v1.4.0...v2.0.0) (2022-08-18)
 
 
