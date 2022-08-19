@@ -73,7 +73,7 @@ class Http
     public function sendAsync(Request $request, array $options = []): PromiseInterface
     {
         if ($request->requiresOAuthAuthorization()) {
-            if (!in_array(OAuthRequestMiddleware::class, $this->config['guzzle'] ?? [], true)) {
+            if (!in_array(OAuthRequestMiddleware::class, $this->config['guzzle']['middlewares'] ?? [], true)) {
                 throw new RuntimeException(OAuthRequestMiddleware::class . ' should be included in the middleware stack');
             }
 
