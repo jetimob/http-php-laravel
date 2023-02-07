@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://github.com/jetimob/http-php-laravel/compare/v2.1.1...v2.2.0) (2023-02-07)
+
+
+### Features
+
+* add option to remap property name before accessing it ([410f06b](https://github.com/jetimob/http-php-laravel/commit/410f06b236181b92f58bf2e452926ba26be911b5))
+
+
+### Bug Fixes
+
+* attempt to get user defined access code token resolver before default ([e6b617c](https://github.com/jetimob/http-php-laravel/commit/e6b617c3e38f08b97238181c016af21d277d436f))
+
 ### [2.1.1](https://github.com/jetimob/http-php-laravel/compare/v2.1.0...v2.1.1) (2022-08-19)
 
 
