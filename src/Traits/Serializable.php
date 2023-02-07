@@ -107,6 +107,10 @@ trait Serializable
         }
 
         foreach ($dataObject as $key => $value) {
+            if (method_exists($this, 'getPropertyName')) {
+                $key = $this->getPropertyName($key);
+            }
+
             // if the property doesn't exist or is already set, continue
             if (!property_exists($this, $key) || !empty($this->{$key})) {
                 continue;
