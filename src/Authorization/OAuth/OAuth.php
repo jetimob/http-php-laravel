@@ -206,7 +206,10 @@ class OAuth
      */
     public function handleAuthorizationCodeExchange(string $authorizationCode): AccessToken
     {
-        return $this->getAccessToken(app()->make(OAuthAuthorizationCodeTokenResolver::class), $authorizationCode);
+        return $this->getAccessToken(app()->make(
+            $this->getConfig()['oauth_access_token_resolver'][OAuthFlow::AUTHORIZATION_CODE] ??
+                OAuthAuthorizationCodeTokenResolver::class
+        ), $authorizationCode);
     }
 
     /**
