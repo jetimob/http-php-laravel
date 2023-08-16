@@ -104,7 +104,12 @@ abstract class AbstractApi
      * given $responseClass.
      * This response class MUST inherit from \Jetimob\Http\Response.
      *
-     * @return Response
+     * @template  T
+     * @param string $method
+     * @param string $path
+     * @param class-string<T> $responseClass
+     *
+     * @return T
      * @throws \Throwable
      * @throws \JsonException
      */
@@ -143,11 +148,12 @@ abstract class AbstractApi
     }
 
     /**
+     * @template T
      * @param string $path
-     * @param string $responseClass
+     * @param class-string<T> $responseClass
      * @param array  $options
      *
-     * @return Response
+     * @return T
      * @throws \JsonException
      * @throws \Throwable
      * @see AbstractApi::mappedRequest()
@@ -161,11 +167,12 @@ abstract class AbstractApi
     }
 
     /**
+     * @template T
      * @param string $path
-     * @param string $responseClass
+     * @param class-string<T> $responseClass
      * @param array  $options Guzzle Options
      *
-     * @return Response
+     * @return T
      * @throws \JsonException
      * @throws \Throwable
      * @see AbstractApi::mappedRequest()
@@ -179,11 +186,12 @@ abstract class AbstractApi
     }
 
     /**
+     * @template T
      * @param string $path
-     * @param string $responseClass
+     * @param class-string<T> $responseClass
      * @param array  $options Guzzle Options
      *
-     * @return Response
+     * @return T
      * @throws \JsonException
      * @throws \Throwable
      * @see AbstractApi::mappedRequest()
@@ -197,11 +205,12 @@ abstract class AbstractApi
     }
 
     /**
+     * @template T
      * @param string $path
-     * @param string $responseClass
+     * @param class-string<T> $responseClass
      * @param array  $options Guzzle Options
      *
-     * @return Response
+     * @return T
      * @throws \JsonException
      * @throws \Throwable
      * @see AbstractApi::mappedRequest()
