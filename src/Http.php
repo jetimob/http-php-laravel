@@ -35,8 +35,11 @@ class Http
 
         if (is_array($middlewares = $guzzleConfig['middlewares'] ?? null)) {
             foreach ($middlewares as $middleware) {
-                if (class_exists($middleware) && is_callable($instance = new $middleware($this))) {
-                    $stack->push($instance);
+                if (class_exists($middleware)) {
+                    $instance = app()->make($middleware, ['http' => $this]);
+                    if (is_callable($instance)) {
+                        $stack->push($instance);
+                    }
                 }
             }
         }
